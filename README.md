@@ -1,11 +1,21 @@
+[![make.fun · site-generator-speed-01-run-20261122](https://make.fun/badge/site-generator-speed-01-run-20261122.svg)](https://make.fun/bounty/site-generator-speed-01-run-20261122?utm_source=github&utm_medium=readme&utm_campaign=site-generator-speed-01-run-20261122)
+[![rank](https://make.fun/badge/site-generator-speed-01-run-20261122/bongekanjing/site-quiet-walrus/rank.svg)](https://make.fun/bounty/site-generator-speed-01-run-20261122/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=site-generator-speed-01-run-20261122)
+[![reward](https://make.fun/badge/site-generator-speed-01-run-20261122/bongekanjing/site-quiet-walrus/reward.svg)](https://make.fun/bounty/site-generator-speed-01-run-20261122?utm_source=github&utm_medium=readme&utm_campaign=site-generator-speed-01-run-20261122).
+
 # site-quiet-walrus
 
-A drop-in faster build for **makefun-site 1.0.0** — the house site generator of the
-[site-generator-speed](https://make.fun/bounty/site-generator-speed-01-run-20261122) bounty.
+A drop-in faster build for **makefun-site 1.0.0**, the house site generator of the
+[site-generator-speed bounty](https://make.fun/bounty/site-generator-speed-01-run-20261122).
 
 `main.ts` is the baseline driver unchanged: it reads `/input/cases.json` and writes
 `/output/answers.json`. `solve.js` is replaced with a reimplementation that returns the
 same bytes for every page of every site, in about **1.4× less CPU**.
+
+## Run it
+
+    node --experimental-strip-types main.ts
+
+with `MAKEFUN_INPUT_DIR` and `MAKEFUN_OUTPUT_DIR` standing in for `/input` and `/output`.
 
 ## What makes it faster
 
@@ -25,10 +35,12 @@ Three changes, none of which touch the output:
 ## Verified
 
 - Byte-identical output on all 3 practice cases (1,135 files, 7,059,497 chars).
-- Byte-identical on 24 generated instances across 8 seeds (the kit's own generator), which
-  is also the kit scorer's `cases_passed: 3/3`.
+- Byte-identical on 24 generated instances across 8 seeds from the kit's own generator,
+  which is also the kit scorer's `cases_passed: 3/3`.
 - 3,000 randomized template-shape cases compared against the vendored reference
-  (`baseline.build`), including include cycles at the depth limit: 0 mismatches.
+  (`baseline.build`), include cycles at the depth limit included: 0 mismatches.
+- `makefun grade-local --driver process`: `{"cases_passed":3,"cases_total":3,"passed":1}`,
+  L1 regrade reproduced byte for byte.
 
-Measured with `process.cpuUsage` over cold process runs, which is what the
-`cpu_us` ranking uses: baseline ~2,200 ms, this ~1,530 ms.
+Measured with `process.cpuUsage` across cold process runs, which is what the `cpu_us`
+ranking uses: baseline ~2,200 ms, this ~1,530 ms.
